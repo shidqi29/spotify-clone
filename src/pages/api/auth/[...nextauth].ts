@@ -10,6 +10,11 @@ export const authOptions = {
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET || "",
     }),
   ],
+
+  pages: {
+    signIn: "/login",
+  },
+
   callbacks: {
     async jwt({ token, account }: any) {
       if (account) {

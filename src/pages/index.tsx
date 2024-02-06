@@ -4,10 +4,8 @@ import { useFetch } from "@/lib/hooks";
 
 export default function Home() {
   const { data } = useSession();
-  console.log({ data });
 
   const { data: list } = useFetch("user-playlist", "/api/playlist");
-  console.log({ list });
 
   return (
     <>
