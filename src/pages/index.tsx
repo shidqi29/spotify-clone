@@ -1,12 +1,30 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
+import { signIn, signOut, useSession } from "next-auth/react";
 
-const inter = Inter({ subsets: ["latin"] });
+import { useFetch } from "@/lib/hooks";
 
 export default function Home() {
+  const { data } = useSession();
+  console.log({ data });
+
+  const { data: list } = useFetch("user-playlist", "/api/playlist");
+  console.log({ list });
+
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1>Hello World</h1>
-    </div>
+    <>
+      Signed in as {data?.user?.email} <br />
+      {list &&
+        list.data.items.map((item) => (
+          <div key={item.id}>
+            <h1>{item.name}</h1>
+            <img src={item.images[0]?.url} width="100" />
+            <p>{item.description}</p>
+          </div>
+        ))}
+      {data ? (
+        <button onClick={() => signOut()}>Sign out</button>
+      ) : (
+        <button onClick={() => signIn()}>Sign in</button>
+      )}
+    </>
   );
 }
