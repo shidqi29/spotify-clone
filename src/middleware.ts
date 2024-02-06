@@ -9,6 +9,6 @@ export function mainMiddleware(request: NextRequest) {
   return res;
 }
 // all paths require authentication
-const requireAuth = ["/*"];
+const requireAuth = ["/"];
 
 export default withAuth(mainMiddleware, requireAuth);
