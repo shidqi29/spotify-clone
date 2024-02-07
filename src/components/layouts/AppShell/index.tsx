@@ -1,11 +1,12 @@
 import React from "react";
-import { SideBar } from "../SideBar";
+import { useRouter } from "next/router";
+
+import { Sidebar } from "../Sidebar";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { useRouter } from "next/router";
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -24,7 +25,7 @@ export const AppShell = ({ children }: AppShellProps) => {
         ) : (
           <ResizablePanelGroup direction="horizontal" className="py-2">
             <ResizablePanel defaultSize={23} minSize={23}>
-              <SideBar />
+              <Sidebar />
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel defaultSize={72}>{children}</ResizablePanel>

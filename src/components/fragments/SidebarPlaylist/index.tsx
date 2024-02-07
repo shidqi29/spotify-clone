@@ -22,7 +22,7 @@ export const SidebarPlaylist = ({
           alt={`${name} playlist`}
           width={50}
           height={50}
-          className="rounded-lg"
+          className="h-[50px] w-[50px] rounded-lg object-cover"
         />
         <div className="flex flex-col">
           <p className="line-clamp-1">{name}</p>

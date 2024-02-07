@@ -7,9 +7,13 @@ import { useFetch } from "@/lib/hooks";
 import { SidebarPlaylist } from "@/components/fragments/SidebarPlaylist";
 import { Separator } from "@/components/ui/separator";
 import { SidebarPlaylistData } from "@/types";
+import { SidebarPlaylistSkeleton } from "@/components/fragments/SidebarPlaylist/Skeleton";
 
-export const SideBar = () => {
-  const { data: userPlaylists } = useFetch("user-playlist", "/api/playlist");
+export const Sidebar = () => {
+  const { data: userPlaylists, isLoading } = useFetch(
+    "user-playlist",
+    "/api/playlist",
+  );
 
   const navigation = [
     {
@@ -23,6 +27,7 @@ export const SideBar = () => {
       icon: <MagnifyingGlass size={24} />,
     },
   ];
+
   return (
     <>
       <div className="mx-2 w-auto rounded-lg bg-secondary">
@@ -54,17 +59,20 @@ export const SideBar = () => {
             <Separator className="-my-1 bg-white/30" orientation="horizontal" />
           </div>
           <div className="flex h-96 flex-col gap-y-1 overflow-y-scroll px-2 pb-2">
-            {userPlaylists &&
-              userPlaylists.data.items.map((item: SidebarPlaylistData) => (
-                <SidebarPlaylist
-                  key={item.id}
-                  id={item.id}
-                  image={item.images[0].url}
-                  name={item.name}
-                  type={item.type}
-                  owner={item.owner.display_name}
-                />
-              ))}
+            {isLoading
+              ? Array.from({ length: 10 }).map((_, index) => (
+                  <SidebarPlaylistSkeleton key={index} />
+                ))
+              : userPlaylists.data.items.map((item: SidebarPlaylistData) => (
+                  <SidebarPlaylist
+                    key={item.id}
+                    id={item.id}
+                    image={item.images[0].url}
+                    name={item.name}
+                    type={item.type}
+                    owner={item.owner.display_name}
+                  />
+                ))}
           </div>
         </div>
       </div>
