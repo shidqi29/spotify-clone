@@ -8,12 +8,16 @@ import { SidebarPlaylist } from "@/components/fragments/SidebarPlaylist";
 import { Separator } from "@/components/ui/separator";
 import { SidebarPlaylistData } from "@/types";
 import { SidebarPlaylistSkeleton } from "@/components/fragments/SidebarPlaylist/Skeleton";
+import { SidebarPlaylistError } from "@/components/fragments/SidebarPlaylist/Error";
 
 export const Sidebar = () => {
-  const { data: userPlaylists, isLoading } = useFetch(
-    "user-playlist",
-    "/api/playlist",
-  );
+  const {
+    data: userPlaylists,
+    isLoading: isLoadingUserPlaylists,
+    isError: isErrorUserPlaylists,
+    error: errorUserPlaylists,
+    refetch: refetchUserPlaylists,
+  } = useFetch("user-playlists", "/api/user/playlists");
 
   const navigation = [
     {
@@ -59,20 +63,26 @@ export const Sidebar = () => {
             <Separator className="-my-1 bg-white/30" orientation="horizontal" />
           </div>
           <div className="flex h-96 flex-col gap-y-1 overflow-y-scroll px-2 pb-2">
-            {isLoading
-              ? Array.from({ length: 10 }).map((_, index) => (
-                  <SidebarPlaylistSkeleton key={index} />
-                ))
-              : userPlaylists.data.items.map((item: SidebarPlaylistData) => (
-                  <SidebarPlaylist
-                    key={item.id}
-                    id={item.id}
-                    image={item.images[0].url}
-                    name={item.name}
-                    type={item.type}
-                    owner={item.owner.display_name}
-                  />
-                ))}
+            {isLoadingUserPlaylists &&
+              Array.from({ length: 10 }).map((_, index) => (
+                <SidebarPlaylistSkeleton key={index} />
+              ))}
+            {isErrorUserPlaylists && (
+              <SidebarPlaylistError onClick={() => refetchUserPlaylists()}>
+                {errorUserPlaylists.message}
+              </SidebarPlaylistError>
+            )}
+            {userPlaylists &&
+              userPlaylists.data.items.map((item: SidebarPlaylistData) => (
+                <SidebarPlaylist
+                  key={item.id}
+                  id={item.id}
+                  image={item.images[0].url}
+                  name={item.name}
+                  type={item.type}
+                  owner={item.owner.display_name}
+                />
+              ))}
           </div>
         </div>
       </div>
