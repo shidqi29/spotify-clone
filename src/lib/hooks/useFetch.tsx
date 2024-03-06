@@ -5,7 +5,11 @@ export const useFetch = (name: string, url: string) => {
   return useQuery({
     queryKey: [name],
     queryFn: async () => {
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        params: {
+          
+        }
+      });
 
       return response.data;
     },

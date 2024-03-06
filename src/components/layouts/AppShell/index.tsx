@@ -25,6 +25,7 @@ export const AppShell = ({ children }: AppShellProps) => {
         ) : (
           <ResizablePanelGroup direction="horizontal" className="py-2">
             <ResizablePanel defaultSize={23} minSize={23}>
+              <div className="fixed bottom-0 h-16 w-full bg-white"></div>
               <Sidebar />
             </ResizablePanel>
             <ResizableHandle />
